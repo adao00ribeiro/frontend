@@ -1,0 +1,73 @@
+<template>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="main">
+            <div class="containerLeft">
+                <SideBar />
+            </div>
+            <div class="containerRight">
+                <component :is="SelectStep"></component>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import FormDadosPessoais from '~/components/FormDadosPessoais.vue';
+import FormInformacoesAdicionais from '~/components/FormInformacoesAdicionais.vue';
+import FormDocument from '~/components/FormDocument.vue';
+
+export default {
+    async asyncData({ params, query, error, app, store, redirect }) {
+        // Aqui você pode acessar o contexto, por exemplo:
+        const step = 4;
+        return {
+            step
+        };
+
+    },
+    data() {
+        const SelectStep = () => {
+            switch (this.step) {
+                case 1:
+                    return <FormDadosPessoais></FormDadosPessoais>
+                    break;
+                case 2:
+                    return <FormInformacoesAdicionais></FormInformacoesAdicionais>
+                    break;
+                case 3:
+                    return <FormDocument></FormDocument>
+                    break;
+                case 4:
+                    return <Confirmacao></Confirmacao>
+                    break;
+            }
+        }
+
+        return {
+            SelectStep
+        }
+    }
+}
+</script>
+
+<style lang="css" scoped>
+.main {
+    width: 60vw;
+    height: 75vh;
+    background-color: #4899e6;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.containerLeft {
+    flex: 1;
+}
+
+.containerRight {
+
+    padding: 2rem 5rem 2rem 5rem;
+    flex: 2;
+}
+</style>
