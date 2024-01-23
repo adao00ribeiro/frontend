@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-text">{{ item.description }}</p>
-                        <a href="#" class="btn btn-primary">Iniciar Matricula</a>
+                        <NuxtLink class="btn btn-primary" to="/matricula">Iniciar Matricula</NuxtLink>
                     </div>
                 </div>
             </div>

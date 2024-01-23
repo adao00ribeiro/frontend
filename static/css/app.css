@@ -12,9 +12,9 @@
     --black-transparent-20: #00000033;
     --black-transparent-03: #00000008;
     --black-transparent-70: #000000b3;
-    --branco: --color-background-second;
+    --branco: #FFF;
 
-
+    --Light-blue: #42c903;
     --h-spotify-logo: 120px;
     --h-menu-opcoes: 150px;
     --m-entre-menus: 10px;
@@ -33,4 +33,17 @@ body {
 * {
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
 }
