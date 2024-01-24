@@ -1,11 +1,7 @@
 <template>
   <div class="w-100 h-100 d-flex flex-column">
     <h3>Dados Pessoais</h3>
-    <form class="w-100 h-100 d-flex flex-column " @submit.prevent="() => {
-      if (validateFields()) {
-        SetStep(step + 1);
-      }
-    }">
+    <form class="w-100 h-100 d-flex flex-column " @submit.prevent="validateFields()">
       <div class="flex-grow-1">
         <div class="form-group">
           <label for="exampleInputEmail1">Nome</label>
@@ -14,8 +10,11 @@
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Email</label>
-          <input required type="email" class="form-control" id="email" v-model="formData.email"
+          <input required type="email" class="form-control" id="email" v-model="formData.email" @input="validateEmail()"
             placeholder="sthepen@gmail.com" />
+          <span class="register-first-error" v-if="!IsEmailValid">
+            Por favor, insira um Email válido.
+          </span>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Telefone</label>
@@ -54,20 +53,30 @@ export default {
         phone: "",
       },
       isPhoneValid: true,
+      IsEmailValid: true
     }
   },
   created() {
 
+    this.formData.name = this.Matricula.name;
+    this.formData.email = this.Matricula.email;
+    this.formData.phone = this.Matricula.phone;
+
   },
   computed: {
-    ...mapGetters("step", ['step'])
+    ...mapGetters("step", ['step']),
+    ...mapGetters("useMatricula", ['Matricula'])
   },
   methods: {
     ...mapActions("step", ["SetStep"]),
 
     validateFields() {
-
-      return false;
+      if (this.isPhoneValid && this.IsEmailValid && this.formData.name !== "") {
+        this.$store.dispatch('useMatricula/setName', this.formData.name);
+        this.$store.dispatch('useMatricula/setEmail', this.formData.email);
+        this.$store.dispatch('useMatricula/setPhone', this.formData.phone);
+        this.SetStep(this.step + 1);
+      }
     },
 
     validatePhone() {
@@ -75,6 +84,10 @@ export default {
       var regexTelefone = /^\(?[1-9]{2}\)? ?(?:[2-8]|9[0-9])[0-9]{3}\-?[0-9]{4}$/;
       this.isPhoneValid = regexTelefone.test(this.formData.phone);
     },
+    validateEmail() {
+      var regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      this.IsEmailValid = regexEmail.test(this.formData.email);
+    }
   },
 };
 </script>
