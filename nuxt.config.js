@@ -27,7 +27,9 @@ export default {
       }
     ]
   },
-
+  env: {
+    DIGITALMATRICULA_API_URL: process.env.DIGITALMATRICULA_API_URL || 'http://localhost:5000'
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],

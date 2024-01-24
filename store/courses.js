@@ -30,7 +30,7 @@ export const actions = {
   },
   async GetCoursesAsync({ commit }) {
     try {
-      const courses = await this.$axios.$get('http://localhost:5000/course')
+      const courses = await this.$axios.$get(process.env.DIGITALMATRICULA_API_URL + '/course')
 
       courses.forEach(course => {
         console.log(course.name)

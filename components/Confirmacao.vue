@@ -96,11 +96,30 @@ export default {
     back() {
       this.SetStep(this.step - 1);
     },
-    confirma() {
-      //SALVAR OSDADOS DO ACADEMICO
-      //SALVAR OSDADOS DO CURSO MATRICULADO (ID DO CURSO E ID DO ACADEMICO)
-      //FAZER UPLOAD DAS IMAGENS 
-      //SALVAR NO BANCO O ENDEREÇO DA IMAGEM
+    async confirma() {
+      console.log(process.env.DIGITALMATRICULA_API_URL);
+      try {
+        const academic = {
+          name: this.Matricula.name,
+          email: this.Matricula.email,
+          phone: this.Matricula.phone,
+          city: this.Matricula.city,
+          state: this.Matricula.state,
+          cep: this.Matricula.cep,
+          cpf: this.Matricula.cpf,
+          birthdate: this.Matricula.birthday,
+        };
+
+        //SALVAR OSDADOS DO ACADEMICO
+        const response = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + "/academic", academic);
+        console.log('Resposta da API:', response);
+        //SALVAR OSDADOS DO CURSO MATRICULADO (ID DO CURSO E ID DO ACADEMICO)
+        //FAZER UPLOAD DAS IMAGENS 
+        //SALVAR NO BANCO O ENDEREÇO DA IMAGEM
+      } catch (error) {
+        console.error('Erro ao fazer a solicitação para a API:', error);
+      }
+
     }
   },
 
