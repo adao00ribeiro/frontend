@@ -15,14 +15,9 @@
 import FormDadosPessoais from '~/components/FormDadosPessoais.vue';
 import FormInformacoesAdicionais from '~/components/FormInformacoesAdicionais.vue';
 import FormDocument from '~/components/FormDocument.vue';
-
+import {mapActions,mapGetters} from 'vuex'
 export default {
     async asyncData({ params, query, error, app, store, redirect }) {
-        // Aqui você pode acessar o contexto, por exemplo:
-        const step = 4;
-        return {
-            step
-        };
 
     },
     data() {
@@ -46,6 +41,12 @@ export default {
         return {
             SelectStep
         }
+    },
+    computed:{
+      ...mapGetters("step",['step'])
+    },
+    methods:{
+      ...mapActions("step",['SetStep'])
     }
 }
 </script>

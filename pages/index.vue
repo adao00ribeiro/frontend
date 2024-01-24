@@ -26,12 +26,19 @@
 </template>
 
 <script lang="ts">
+import { mapActions, mapGetters } from "vuex";
 import Vue from 'vue'
-
-
 export default Vue.extend({
   name: 'IndexPage',
-
+  async asyncData({ store }) {
+    await store.dispatch('courses/GetCoursesAsync');
+},
+  computed: {
+    ...mapGetters("courses", ["listcourse"]),
+  },
+  methods: {
+    ...mapActions("courses", ["GetCoursesAsync"]),
+  },
 })
 </script>
 
