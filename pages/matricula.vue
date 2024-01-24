@@ -15,13 +15,14 @@
 import FormDadosPessoais from '~/components/FormDadosPessoais.vue';
 import FormInformacoesAdicionais from '~/components/FormInformacoesAdicionais.vue';
 import FormDocument from '~/components/FormDocument.vue';
-import {mapActions,mapGetters} from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     async asyncData({ params, query, error, app, store, redirect }) {
 
     },
     data() {
         const SelectStep = () => {
+
             switch (this.step) {
                 case 1:
                     return <FormDadosPessoais></FormDadosPessoais>
@@ -42,11 +43,11 @@ export default {
             SelectStep
         }
     },
-    computed:{
-      ...mapGetters("step",['step'])
+    computed: {
+        ...mapGetters("step", ['step'])
     },
-    methods:{
-      ...mapActions("step",['SetStep'])
+    methods: {
+        ...mapActions("step", ['SetStep'])
     }
 }
 </script>
