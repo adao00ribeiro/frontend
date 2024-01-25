@@ -1,12 +1,11 @@
 <template>
-  <div class="w-100 h-100 d-flex flex-column">
+  <div class="p-4 d-flex flex-column flex-grow-1">
     <h3>Dados Pessoais</h3>
-    <form class="w-100 h-100 d-flex flex-column " @submit.prevent="validateFields()">
+    <form class=" h-100 d-flex flex-column " @submit.prevent="validateFields()">
       <div class="flex-grow-1">
         <div class="form-group">
           <label for="exampleInputEmail1">Nome</label>
           <input required type="text" class="form-control" id="name" v-model="formData.name" placeholder="e.g sthepen" />
-
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Email</label>
@@ -26,17 +25,11 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-between">
-        <button type="button" class="btn  mt-auto align-self-start bg-transparent" @click="SetStep(step)">
-          Voltar
-        </button>
-        <button type="submit" class="buttonprimary btn mt-auto align-self-end">
-          Próxima Etapa
-        </button>
-      </div>
+      <button type="submit" class="buttonprimary btn mt-auto align-self-end">
+        Próxima Etapa
+      </button>
+
     </form>
-
-
   </div>
 </template>
 
@@ -92,7 +85,4 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-
-
-</style>
+<style lang="css" scoped></style>

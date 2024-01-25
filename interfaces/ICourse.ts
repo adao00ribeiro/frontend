@@ -8,5 +8,6 @@ export interface ICourse {
     type: string;
     investmentvalue: number;
     numberofinstallments: number;
+    url: string;
     academicId?: string;
 }

@@ -5,7 +5,7 @@
 
     --color-primary: #1586cb;
     --color-scroll: #0569db5d;
-    --color-primary-hover: #0d2543;
+    --color-primary-hover: #003d88;
     --color-background-primary: #f0f0f0;
     --color-background-second: #0d2543;
     --black-transparent-30: #0000004D;
@@ -14,12 +14,7 @@
     --black-transparent-70: #000000b3;
     --branco: #FFF;
 
-    --Light-blue: #42c903;
-    --h-spotify-logo: 120px;
-    --h-menu-opcoes: 150px;
-    --m-entre-menus: 10px;
-    --h-footer-user: 70px;
-    --h-desconsiderar: calc(var(--h-spotify-logo) + var(--h-menu-opcoes) + var(--h-footer-user));
+
 
 }
 
@@ -27,22 +22,32 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #636363 !important;;
+    background-color: #636363 !important;
+    ;
 }
 
 * {
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
 }
-.buttonprimary{
-  background-color: var(--color-primary) !important;;
+
+.buttonprimary {
+    color: var(--branco) !important;
+    background-color: var(--color-primary) !important;
+    ;
 }
+
+.buttonprimary:hover {
+    background-color: var(--color-primary-hover) !important;
+    ;
+}
+
 ::-webkit-scrollbar {
     width: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var( --color-scroll);
+    background-color: var(--color-scroll);
     border-radius: 10px;
 }
 

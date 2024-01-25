@@ -1,13 +1,7 @@
 <template>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="main">
-            <div class="containerLeft">
-                <SideBar />
-            </div>
-            <div class="containerRight">
-                <component :is="SelectStep"></component>
-            </div>
-        </div>
+    <div class="matricula">
+        <SideBar />
+        <component :is="SelectStep"></component>
     </div>
 </template>
 
@@ -43,11 +37,11 @@ export default {
             SelectStep
         }
     },
-    beforeMount(){
-     const selectedCourse  = this.$store.getters['courses/SelectedCourse'];
-      if(selectedCourse ==null){
-        this.$router.push('/');
-      }
+    beforeMount() {
+        const selectedCourse = this.$store.getters['courses/SelectedCourse'];
+        if (selectedCourse == null) {
+            this.$router.push('/');
+        }
     },
     computed: {
         ...mapGetters("step", ['step'])
@@ -59,23 +53,21 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.main {
-    width: 60vw;
-    height: 75vh;
-    background-color:var(--color-background-primary);
+.matricula {
+    width: 80%;
+    height: 100vh;
+    background-color: var(--color-background-primary);
     display: flex;
     flex-direction: row;
-    padding: 5px;
     border-radius: 10px;
+    margin: 0 auto;
 }
 
-.containerLeft {
-    flex: 1;
-}
-
-.containerRight {
-
-    padding: 2rem 5rem 2rem 5rem;
-    flex: 2;
+@media screen and (max-width:700px) {
+    .matricula {
+        width: 100vw;
+        flex-direction: column;
+        height: 100%;
+    }
 }
 </style>

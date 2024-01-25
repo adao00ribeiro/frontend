@@ -1,8 +1,8 @@
 <template>
-  <div class="w-100 h-100 d-flex flex-column">
+  <div class="p-4 d-flex flex-column flex-grow-1">
     <h4>Confirmacao dos Dados</h4>
     <div class="w-100 h-100 p-1 d-flex flex-column flex-grow-1 overflow-scroll">
-      <h5 class="bg-primary">Curso</h5>
+      <h5 class="bg-primary p-1">Curso</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Nome:</div>
         <div>{{ SelectedCourse.name }}</div>
@@ -23,7 +23,7 @@
         <div>Numero de Parcelas:</div>
         <div>{{ SelectedCourse.numberofinstallments }}</div>
       </div>
-      <h5 class="bg-primary">Dados Pessoais</h5>
+      <h5 class="bg-primary p-1">Dados Pessoais</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Nome:</div>
         <div>{{ Matricula.name }}</div>
@@ -37,7 +37,7 @@
         <div>{{ Matricula.phone }}</div>
       </div>
 
-      <h5 class="bg-primary">Informações Adicionais</h5>
+      <h5 class="bg-primary p-1">Informações Adicionais</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Cidade:</div>
         <div>{{ Matricula.city }}</div>
@@ -58,7 +58,7 @@
         <div>Data de Nascimento:</div>
         <div>{{ Matricula.birthday }}</div>
       </div>
-      <h5 class="bg-primary">Documentos</h5>
+      <h5 class="bg-primary p-1">Documentos</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Frente</div>
         <div>{{ Matricula.documentfrenteImage.name }}</div>
@@ -70,28 +70,31 @@
     </div>
     <div></div>
     <div class="d-flex justify-content-between">
-      <button
-        type="button"
-        class="btn btn-primary mt-auto align-self-start bg-transparent"
-        @click="back()"
-      >
+      <button type="button" class="btn  mt-auto align-self-start bg-transparent" @click="back()">
         Voltar
       </button>
-      <button
-        type="button"
-        class="btn btn-primary mt-auto align-self-end"
-        @click="confirma()"
-      >
+      <button type="button" class="btn btn-primary mt-auto align-self-end" @click="confirma()">
         Confirmar
       </button>
     </div>
+
   </div>
 </template>
 
 <script>
+
 import { mapActions, mapGetters } from "vuex";
+
+
 export default {
-  created() {},
+  data() {
+    return {
+
+    }
+  },
+  created() {
+
+  },
   computed: {
     ...mapGetters("step", ["step"]),
     ...mapGetters("useMatricula", ["Matricula"]),
@@ -102,8 +105,12 @@ export default {
     back() {
       this.SetStep(this.step - 1);
     },
+    showModal() {
+      this.modal.showModal();
+    },
     async confirma() {
-      console.log(process.env.DIGITALMATRICULA_API_URL);
+
+
       try {
         // Criar um objeto FormData
         const formData = new FormData();
@@ -129,16 +136,19 @@ export default {
             },
           }
         );
-        console.log("Resposta da API:", responseAcademic.data);
-        const EnrolledCouse = {
-          academicId: responseAcademic.data.id,
-          courseId: this.SelectedCourse.id,
-        };
+        if (responseAcademic.data.success) {
+          this.$toast.success('Successfully authenticated')
+        } else {
+          this.$toast.error(responseAcademic.data.message)
+        }
+
+
       } catch (error) {
-        console.error("Erro ao fazer a solicitação para a API:", error);
+        this.$toast.error(error);
       }
     },
   },
+
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100 d-flex flex-column">
+  <div class="p-4 d-flex flex-column flex-grow-1">
     <h4>Documento de Identificaçao</h4>
     <form class="w-100 h-100 d-flex flex-column " @submit.prevent="validateFields()">
       <div class="flex-grow-1">
@@ -7,7 +7,7 @@
           <span>Frente</span>
           <label class="labelAvatar">
             <span v-if="!DocumentoFrente.imagemUrl">
-
+              <i class="bi bi-upload fs-3"></i>
             </span>
             <img v-else class="preview" :src='DocumentoFrente.imagemUrl' alt="Documento" />
             <input type="file" name="inputFile" accept="image/png, image/jpeg" @change="handleFileFrente" />
@@ -18,7 +18,7 @@
           <span>Verso</span>
           <label class="labelAvatar">
             <span v-if="!DocumentoVerso.imagemUrl">
-
+              <i class="bi bi-upload fs-3"></i>
             </span>
             <img v-else class="preview" :src="DocumentoVerso.imagemUrl" alt="Documento" />
             <input type="file" name="inputFile" accept="image/png, image/jpeg" @change="handleFileTras" />
@@ -29,7 +29,7 @@
         </span>
       </div>
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary mt-auto align-self-start bg-transparent" @click="back()">
+        <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
           Voltar
         </button>
         <button type="submit" class="btn btn-primary mt-auto align-self-end">
@@ -140,12 +140,18 @@ export default {
   cursor: pointer;
 }
 
+.icon {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+
 .labelAvatar span {
   z-index: 99;
   position: absolute;
   opacity: 0.5;
   transform: all 0.5s;
-  color: #696969;
+  color: #c0bebe;
 }
 
 .labelAvatar span:hover {
