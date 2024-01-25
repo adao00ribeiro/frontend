@@ -43,6 +43,12 @@ export default {
             SelectStep
         }
     },
+    beforeMount(){
+     const selectedCourse  = this.$store.getters['courses/SelectedCourse'];
+      if(selectedCourse ==null){
+        this.$router.push('/');
+      }
+    },
     computed: {
         ...mapGetters("step", ['step'])
     },
@@ -56,7 +62,7 @@ export default {
 .main {
     width: 60vw;
     height: 75vh;
-    background-color: #4899e6;
+    background-color:var(--color-background-primary);
     display: flex;
     flex-direction: row;
     padding: 5px;

@@ -52,7 +52,7 @@ export default {
 .container {
     width: 100%;
     height: 100%;
-    background-color: blue;
+    background-color: var(--color-primary);
     background-size: cover;
     border-radius: 5px;
     display: flex;

@@ -27,10 +27,10 @@
       </div>
 
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary mt-auto align-self-start bg-transparent" @click="SetStep(step)">
+        <button type="button" class="btn  mt-auto align-self-start bg-transparent" @click="SetStep(step)">
           Voltar
         </button>
-        <button type="submit" class="btn btn-primary mt-auto align-self-end">
+        <button type="submit" class="buttonprimary btn mt-auto align-self-end">
           Próxima Etapa
         </button>
       </div>
@@ -92,4 +92,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+
+
+</style>

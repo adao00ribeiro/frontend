@@ -1,7 +1,7 @@
 <template>
   <div class="w-100 h-100 d-flex flex-column">
     <h4>Confirmacao dos Dados</h4>
-    <div class="w-100 h-100 p-1 d-flex flex-column  flex-grow-1 overflow-scroll">
+    <div class="w-100 h-100 p-1 d-flex flex-column flex-grow-1 overflow-scroll">
       <h5 class="bg-primary">Curso</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Nome:</div>
@@ -65,15 +65,23 @@
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Verso</div>
-        <div>{{ Matricula.documentfrenteImage.name }}</div>
+        <div>{{ Matricula.documentversoImage.name }}</div>
       </div>
     </div>
     <div></div>
     <div class="d-flex justify-content-between">
-      <button type="button" class="btn btn-primary mt-auto align-self-start bg-transparent" @click="back()">
+      <button
+        type="button"
+        class="btn btn-primary mt-auto align-self-start bg-transparent"
+        @click="back()"
+      >
         Voltar
       </button>
-      <button type="button" class="btn btn-primary mt-auto align-self-end" @click="confirma()">
+      <button
+        type="button"
+        class="btn btn-primary mt-auto align-self-end"
+        @click="confirma()"
+      >
         Confirmar
       </button>
     </div>
@@ -83,12 +91,10 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  created() {
-
-  },
+  created() {},
   computed: {
     ...mapGetters("step", ["step"]),
-    ...mapGetters("useMatricula", ['Matricula']),
+    ...mapGetters("useMatricula", ["Matricula"]),
     ...mapGetters("courses", ["SelectedCourse"]),
   },
   methods: {
@@ -99,30 +105,40 @@ export default {
     async confirma() {
       console.log(process.env.DIGITALMATRICULA_API_URL);
       try {
-        const academic = {
-          name: this.Matricula.name,
-          email: this.Matricula.email,
-          phone: this.Matricula.phone,
-          city: this.Matricula.city,
-          state: this.Matricula.state,
-          cep: this.Matricula.cep,
-          cpf: this.Matricula.cpf,
-          birthdate: this.Matricula.birthday,
-        };
-
+        // Criar um objeto FormData
+        const formData = new FormData();
+        // Adicionar campos ao FormData
+        formData.append("idcourse", this.SelectedCourse.id);
+        formData.append("name", this.Matricula.name);
+        formData.append("email", this.Matricula.email);
+        formData.append("phone", this.Matricula.phone);
+        formData.append("city", this.Matricula.city);
+        formData.append("state", this.Matricula.state);
+        formData.append("cep", this.Matricula.cep);
+        formData.append("cpf", this.Matricula.cpf);
+        formData.append("birthday", this.Matricula.birthday);
+        formData.append("files", this.Matricula.documentfrenteImage);
+        formData.append("files", this.Matricula.documentversoImage);
         //SALVAR OSDADOS DO ACADEMICO
-        const response = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + "/academic", academic);
-        console.log('Resposta da API:', response);
-        //SALVAR OSDADOS DO CURSO MATRICULADO (ID DO CURSO E ID DO ACADEMICO)
-        //FAZER UPLOAD DAS IMAGENS 
-        //SALVAR NO BANCO O ENDEREÇO DA IMAGEM
+        const responseAcademic = await this.$axios.post(
+          process.env.DIGITALMATRICULA_API_URL + "/matricula",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data", // Certifique-se de configurar o cabeçalho correto
+            },
+          }
+        );
+        console.log("Resposta da API:", responseAcademic.data);
+        const EnrolledCouse = {
+          academicId: responseAcademic.data.id,
+          courseId: this.SelectedCourse.id,
+        };
       } catch (error) {
-        console.error('Erro ao fazer a solicitação para a API:', error);
+        console.error("Erro ao fazer a solicitação para a API:", error);
       }
-
-    }
+    },
   },
-
 };
 </script>
 
