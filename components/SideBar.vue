@@ -1,5 +1,6 @@
 <template>
     <div class="sidebar">
+
         <div class="groupbox">
             <div :class="{ 'containerH3Selecionado': step === 1, 'containerH3': step !== 1 }">
                 <h3>1</h3>

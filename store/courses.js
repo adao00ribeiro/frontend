@@ -18,6 +18,9 @@ export const mutations = {
   },
   addSelectedCourse(state, payload) {
     state.selectedcourse = payload;
+  },
+  clearCourses(state) {
+    state.courses = [];
   }
 }
 
@@ -28,8 +31,12 @@ export const actions = {
   AdicionarSelectedCourse({ commit }, payload) {
     commit('addSelectedCourse', payload)
   },
+  LimparCourses({ commit }) {
+    commit('clearCourses');
+  },
   async GetCoursesAsync({ commit }) {
     try {
+      commit('clearCourses');
       const courses = await this.$axios.$get(process.env.DIGITALMATRICULA_API_URL + '/course')
 
       courses.forEach(course => {

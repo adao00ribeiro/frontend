@@ -1,13 +1,13 @@
 <template>
   <div class="container w-100 vh-100 d-flex flex-column align-items-center ">
     <br />
-    <input v-model="searchQuery" class="w-50 form-control " @input="handleSearch" type="search" placeholder="Search"
+    <input v-model="searchQuery" class="w-50 form-control " @input="handleSearch" type="search" placeholder="Procurar"
       aria-label="Search">
 
     <br />
     <div class="w-100 mt-5 d-flex flex-column justify-content-start ">
       <div>
-        <button class="btn buttonprimary" @click="filter('Graduação', '')">Graduacao</button>
+        <button class="btn buttonprimary" @click="filter('Graduação', '')">Graduação</button>
         <button class="btn buttonprimary" @click="filter('Pós-Graduação', '')">Pós-Graduação</button>
       </div>
       <br />
@@ -15,7 +15,7 @@
       <div>
         <h4>Metodologia</h4>
         <button class="btn buttonprimary" @click="filter('', 'Presencial')">Presencial</button>
-        <button class="btn buttonprimary" @click="filter('', 'A Distancia')">A Distancia</button>
+        <button class="btn buttonprimary" @click="filter('', 'A Distancia')">À Distância</button>
       </div>
 
     </div>
@@ -40,7 +40,7 @@
                 AdicionarSelectedCourse(item);
                 RouterMatricula();
               }" class="btn buttonprimary w-100">
-                Pré-Matricula
+               Matricula
               </Button>
             </div>
           </div>

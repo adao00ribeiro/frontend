@@ -11,20 +11,22 @@
           <label for="exampleInputPassword1">Email</label>
           <input required type="email" class="form-control" id="email" v-model="formData.email" @input="validateEmail()"
             placeholder="sthepen@gmail.com" />
-          <span class="register-first-error" v-if="!IsEmailValid">
+          <span class="alerterror register-first-error" v-if="!IsEmailValid">
             Por favor, insira um Email válido.
           </span>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Telefone</label>
-          <input required type="text" class="form-control" id="telefone" v-model="formData.phone" @input="validatePhone()"
+          <input required type="text" class="form-control" id="telefone" v-mask="'(##)#####-####'" v-model="formData.phone" @input="validatePhone()"
             placeholder="(44) 99900-0102" />
-          <span class="register-first-error" v-if="!isPhoneValid">
+          <span class="alerterror register-first-error" v-if="!isPhoneValid">
             Por favor, insira um número de telefone válido.
           </span>
         </div>
       </div>
-
+      <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
+          Voltar
+        </button>
       <button type="submit" class="buttonprimary btn mt-auto align-self-end">
         Próxima Etapa
       </button>
@@ -35,9 +37,10 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import {mask} from 'vue-the-mask'
 
 export default {
-
+  directives: {mask},
   data() {
     return {
       formData: {
@@ -80,6 +83,9 @@ export default {
     validateEmail() {
       var regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       this.IsEmailValid = regexEmail.test(this.formData.email);
+    },
+    back(){
+      this.$router.push('/')
     }
   },
 };

@@ -138,11 +138,15 @@ export default {
         );
         if (responseAcademic.data.success) {
           this.$toast.success('Successfully authenticated')
+
+          setTimeout(() => {
+
+    this.$router.push('/');
+  }, 3000);
+
         } else {
           this.$toast.error(responseAcademic.data.message)
         }
-
-
       } catch (error) {
         this.$toast.error(error);
       }

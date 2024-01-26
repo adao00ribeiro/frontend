@@ -24,7 +24,7 @@
             <input type="file" name="inputFile" accept="image/png, image/jpeg" @change="handleFileTras" />
           </label>
         </div>
-        <span class="register-first-error" v-if="!DocumentoFrente.imageAvatar || !DocumentoVerso.imageAvatar">
+        <span class="alerterror register-first-error" v-if="!DocumentoFrente.imageAvatar || !DocumentoVerso.imageAvatar">
           Por favor, Insira RG OU CNH
         </span>
       </div>

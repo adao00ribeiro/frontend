@@ -18,16 +18,14 @@
 
         <div class="form-group">
           <label for="exampleInputPassword1">CEP</label>
-          <input required type="text" class="form-control" id="cep" v-model="formData.cep" @input="validateCep()"
+          <input required type="text" class="form-control" id="cep" v-mask="'#####-###'"  v-model="formData.cep"
             placeholder="00000-000" />
-          <span class="register-first-error" v-if="!IsCepValid">
-            Por favor, insira um Cep válido.
-          </span>
+
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">CPF</label>
-          <input required type="text" class="form-control" id="cpf" v-model="formData.cpf" placeholder="00000000000" />
-          <span class="register-first-error" v-if="!IsCpfValid">
+          <input required type="text" class="form-control" id="cpf"  v-mask="'###.###.###-##'" v-model="formData.cpf" placeholder="000.000.000-00" />
+          <span class="alerterror register-first-error" v-if="!IsCpfValid">
             Por favor, insira um CPF válido.
           </span>
         </div>
@@ -51,7 +49,11 @@
 
 <script >
 import { mapActions, mapGetters } from "vuex";
+import {mask} from 'vue-the-mask'
 export default {
+
+  directives: {mask},
+
   data() {
     return {
       formData: {
@@ -61,7 +63,6 @@ export default {
         cpf: "",
         birthday: "",
       },
-      IsCepValid: true,
       IsCpfValid: true,
       States: [],
     };
@@ -79,13 +80,15 @@ export default {
     console.log(this.formData.birthday)
   },
   computed: {
+
     ...mapGetters("step", ["step"]),
     ...mapGetters("useMatricula", ["Matricula"]),
   },
   methods: {
     ...mapActions("step", ["SetStep"]),
-    validateFields() {
-      if (this.IsCepValid && this.IsCpfValid && this.formData.birthday !== "") {
+    async validateFields() {
+
+      if ( this.IsCpfValid && this.formData.birthday !== "" &&  await this.validateCep()) {
         this.$store.dispatch("useMatricula/setCity", this.formData.city);
         this.$store.dispatch("useMatricula/setState", this.formData.state);
         this.$store.dispatch("useMatricula/setCep", this.formData.cep);
@@ -96,15 +99,21 @@ export default {
     }, back() {
       this.SetStep(this.step - 1);
     },
-    validateCep() {
-      var regexCep = /^\d{5}-\d{3}/;
-      this.IsCepValid = regexCep.test(this.formData.cep);
+    async validateCep() {
+      try {
+      const cepData = await this.$axios.$get(`https://opencep.com/v1/${this.formData.cep.replace('-', '')}`);
+
+      if(cepData){
+        return true;
+        }
+    } catch (error) {
+      console.error(error);
+      return false
+    }
+
     },
     convertBirthDay() {
-
       const [year, month, day] = this.formData.birthday.split("-");
-
-
       return `${year}-${month}-${day}T00:00:00Z`;
     },
   },

@@ -36,7 +36,9 @@ body {
     background-color: var(--color-primary) !important;
     ;
 }
-
+.alerterror{
+  color: red !important;
+}
 .buttonprimary:hover {
     background-color: var(--color-primary-hover) !important;
     ;
