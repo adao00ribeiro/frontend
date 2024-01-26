@@ -18,13 +18,14 @@
 
         <div class="form-group">
           <label for="exampleInputPassword1">CEP</label>
-          <input required type="text" class="form-control" id="cep" v-mask="'#####-###'"  v-model="formData.cep"
+          <input required type="text" class="form-control" id="cep" v-mask="'#####-###'" v-model="formData.cep"
             placeholder="00000-000" />
 
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">CPF</label>
-          <input required type="text" class="form-control" id="cpf"  v-mask="'###.###.###-##'" v-model="formData.cpf" placeholder="000.000.000-00" />
+          <input required type="text" class="form-control" id="cpf" v-mask="'###.###.###-##'" v-model="formData.cpf"
+            placeholder="000.000.000-00" />
           <span class="alerterror register-first-error" v-if="!IsCpfValid">
             Por favor, insira um CPF válido.
           </span>
@@ -35,7 +36,7 @@
             placeholder="01/01/1990" />
         </div>
       </div>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex flex-row justify-content-between">
         <button type="button" class="btn  mt-auto align-self-start bg-transparent" @click="back()">
           Voltar
         </button>
@@ -49,10 +50,10 @@
 
 <script >
 import { mapActions, mapGetters } from "vuex";
-import {mask} from 'vue-the-mask'
+import { mask } from 'vue-the-mask'
 export default {
 
-  directives: {mask},
+  directives: { mask },
 
   data() {
     return {
@@ -88,7 +89,7 @@ export default {
     ...mapActions("step", ["SetStep"]),
     async validateFields() {
 
-      if ( this.IsCpfValid && this.formData.birthday !== "" &&  await this.validateCep()) {
+      if (this.IsCpfValid && this.formData.birthday !== "" && await this.validateCep()) {
         this.$store.dispatch("useMatricula/setCity", this.formData.city);
         this.$store.dispatch("useMatricula/setState", this.formData.state);
         this.$store.dispatch("useMatricula/setCep", this.formData.cep);
@@ -101,15 +102,15 @@ export default {
     },
     async validateCep() {
       try {
-      const cepData = await this.$axios.$get(`https://opencep.com/v1/${this.formData.cep.replace('-', '')}`);
+        const cepData = await this.$axios.$get(`https://opencep.com/v1/${this.formData.cep.replace('-', '')}`);
 
-      if(cepData){
-        return true;
+        if (cepData) {
+          return true;
         }
-    } catch (error) {
-      console.error(error);
-      return false
-    }
+      } catch (error) {
+        console.error(error);
+        return false
+      }
 
     },
     convertBirthDay() {

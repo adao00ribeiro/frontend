@@ -60,12 +60,12 @@
       </div>
       <h5 class="bg-primary p-1">Documentos</h5>
       <div class="d-flex flex-row justify-content-between">
-        <div>Frente</div>
-        <div>{{ formData.documentfrenteImage?.name }}</div>
+        <div>Frente:</div>
+        <p class="textImage">{{ formData.documentfrenteImage?.name }}</p>
       </div>
       <div class="d-flex flex-row justify-content-between">
-        <div>Verso</div>
-        <div>{{ formData.documentversoImage?.name }}</div>
+        <div>Verso:</div>
+        <p class="textImage">{{ formData.documentversoImage?.name }}</p>
       </div>
     </div>
     <div></div>
@@ -179,4 +179,13 @@ export default {
 };
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+.textImage {
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.56rem;
+  max-width: 20rem;
+}
+</style>

@@ -1,19 +1,19 @@
 <template>
   <div class="container w-100 vh-100 d-flex flex-column align-items-center ">
     <br />
-    <input v-model="searchQuery" class="w-50 form-control " @input="handleSearch" type="search" placeholder="Procurar"
-      aria-label="Search">
+    <input v-model="searchQuery" class="inputsearch w-100 form-control " @input="handleSearch" type="search"
+      placeholder="Procurar" aria-label="Search">
 
     <br />
-    <div class="w-100 mt-5 d-flex flex-column justify-content-start ">
-      <div>
+    <div class="w-100 d-flex flex-column justify-content-start ">
+      <div class="containerButton">
         <button class="btn buttonprimary" @click="filter('Graduação', '')">Graduação</button>
         <button class="btn buttonprimary" @click="filter('Pós-Graduação', '')">Pós-Graduação</button>
       </div>
       <br />
+      <h5 class="text-light">Metodologia</h5>
+      <div class="containerButton">
 
-      <div>
-        <h4>Metodologia</h4>
         <button class="btn buttonprimary" @click="filter('', 'Presencial')">Presencial</button>
         <button class="btn buttonprimary" @click="filter('', 'A Distancia')">À Distância</button>
       </div>
@@ -114,6 +114,17 @@ export default Vue.extend({
 
 
 <style>
+.inputsearch {
+  max-width: 50%;
+}
+
+.containerButton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
 .card img {
   height: 200px;
 }
@@ -154,5 +165,17 @@ export default Vue.extend({
 .containerInvestimento p {
   font-weight: 700;
   font-size: 1rem;
+}
+
+@media screen and (max-width:700px) {
+  .inputsearch {
+    max-width: none;
+  }
+
+  .containerButton {
+
+    flex-direction: column;
+
+  }
 }
 </style>
