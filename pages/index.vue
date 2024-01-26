@@ -37,10 +37,12 @@
                 <p class="title card-title">{{ item.modality }}</p>
               </div>
               <Button @click="() => {
+
+                SetStep(1);
                 AdicionarSelectedCourse(item);
                 RouterMatricula();
               }" class="btn buttonprimary w-100">
-               Matricula
+                Matricula
               </Button>
             </div>
           </div>
@@ -78,11 +80,14 @@ export default Vue.extend({
     this.filteredCourses = this.Courses;
   },
   computed: {
+
     ...mapGetters("courses", ["listcourse"]),
   },
   methods: {
+    ...mapActions("step", ["SetStep"]),
     ...mapActions("courses", ["GetCoursesAsync"]),
     ...mapActions("courses", ["AdicionarSelectedCourse"]),
+
     filter(type: string, modality: string) {
       this.filteredCourses = this.Courses.filter((course: ICourse) => {
         const typeMatch = !type || course.type === type;
@@ -103,8 +108,6 @@ export default Vue.extend({
     RouterMatricula() {
       this.$router.push('/matricula')
     },
-
-
   },
 })
 </script>

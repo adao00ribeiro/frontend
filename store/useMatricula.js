@@ -62,7 +62,16 @@ export const mutations = {
     setDocumentVerso(state, documentverso) {
         state.matricula.documentversoImage = documentverso;
     },
+    clearMatricula(state) {
 
+        Object.keys(state.matricula).forEach((field) => {
+            if (field.includes('Image')) {
+                state.matricula[field] = null;
+            } else {
+                state.matricula[field] = '';
+            }
+        });
+    }
 }
 
 export const actions = {
@@ -104,5 +113,8 @@ export const actions = {
 
     setDocumentVerso({ commit }, documentverso) {
         commit('setDocumentVerso', documentverso);
+    },
+    LimparMatricula({ commit }) {
+        commit('clearMatricula');
     },
 }

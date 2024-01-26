@@ -26,46 +26,46 @@
       <h5 class="bg-primary p-1">Dados Pessoais</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Nome:</div>
-        <div>{{ Matricula.name }}</div>
+        <div>{{ formData.name }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Email:</div>
-        <div>{{ Matricula.email }}</div>
+        <div>{{ formData.email }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Telefone:</div>
-        <div>{{ Matricula.phone }}</div>
+        <div>{{ formData.phone }}</div>
       </div>
 
       <h5 class="bg-primary p-1">Informações Adicionais</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Cidade:</div>
-        <div>{{ Matricula.city }}</div>
+        <div>{{ formData.city }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Estado:</div>
-        <div>{{ Matricula.state }}</div>
+        <div>{{ formData.state }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Cep:</div>
-        <div>{{ Matricula.cep }}</div>
+        <div>{{ formData.cep }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Cpf:</div>
-        <div>{{ Matricula.cpf }}</div>
+        <div>{{ formData.cpf }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Data de Nascimento:</div>
-        <div>{{ Matricula.birthday }}</div>
+        <div>{{ formData.birthday }}</div>
       </div>
       <h5 class="bg-primary p-1">Documentos</h5>
       <div class="d-flex flex-row justify-content-between">
         <div>Frente</div>
-        <div>{{ Matricula.documentfrenteImage.name }}</div>
+        <div>{{ formData.documentfrenteImage?.name }}</div>
       </div>
       <div class="d-flex flex-row justify-content-between">
         <div>Verso</div>
-        <div>{{ Matricula.documentversoImage.name }}</div>
+        <div>{{ formData.documentversoImage?.name }}</div>
       </div>
     </div>
     <div></div>
@@ -89,11 +89,31 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-
+      formData: {
+        name: "",
+        email: "",
+        phone: "",
+        city: "",
+        state: "",
+        cep: "",
+        cpf: "",
+        birthday: "",
+        documentfrenteImage: null,
+        documentversoImage: null
+      },
     }
   },
   created() {
-
+    this.formData.name = this.Matricula.name;
+    this.formData.email = this.Matricula.email;
+    this.formData.phone = this.Matricula.phone;
+    this.formData.city = this.Matricula.city;
+    this.formData.state = this.Matricula.state;
+    this.formData.cep = this.Matricula.cep;
+    this.formData.cpf = this.Matricula.cpf;
+    this.formData.birthday = this.Matricula.birthday;
+    this.formData.documentfrenteImage = this.Matricula.documentfrenteImage;
+    this.formData.documentversoImage = this.Matricula.documentversoImage;
   },
   computed: {
     ...mapGetters("step", ["step"]),
@@ -101,7 +121,9 @@ export default {
     ...mapGetters("courses", ["SelectedCourse"]),
   },
   methods: {
-    ...mapActions("step", ["SetStep"], 2),
+    ...mapActions("step", ["SetStep"]),
+    ...mapActions("courses", ["LimparSelectCouse"]),
+    ...mapActions("useMatricula", ["LimparMatricula"]),
     back() {
       this.SetStep(this.step - 1);
     },
@@ -109,7 +131,6 @@ export default {
       this.modal.showModal();
     },
     async confirma() {
-
 
       try {
         // Criar um objeto FormData
@@ -137,19 +158,21 @@ export default {
           }
         );
         if (responseAcademic.data.success) {
-          this.$toast.success('Successfully authenticated')
-
-          setTimeout(() => {
-
-    this.$router.push('/');
-  }, 3000);
-
+          this.$toast.success('Sucesso, voce foi matriculado')
+          this.LimparMatricula();
         } else {
           this.$toast.error(responseAcademic.data.message)
+
         }
       } catch (error) {
         this.$toast.error(error);
+
       }
+      this.LimparSelectCouse();
+      setTimeout(() => {
+
+        this.$router.push('/');
+      }, 3000);
     },
   },
 

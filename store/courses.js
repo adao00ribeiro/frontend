@@ -1,7 +1,17 @@
 
 export const state = () => ({
   courses: [],
-  selectedcourse: null
+  selectedcourse: {
+    id: "",
+    name: "",
+    description: "",
+    modality: "",
+    type: "",
+    investmentvalue: 0,
+    numberofinstallments: 0,
+    url: "",
+    academicId: "",
+  }
 })
 export const getters = {
   listcourse(state) {
@@ -21,6 +31,19 @@ export const mutations = {
   },
   clearCourses(state) {
     state.courses = [];
+  },
+  clearSelectCouse(state) {
+    state.selectedcourse = {
+      id: "",
+      name: "",
+      description: "",
+      modality: "",
+      type: "",
+      investmentvalue: 0,
+      numberofinstallments: 0,
+      url: "",
+      academicId: "",
+    };
   }
 }
 
@@ -34,13 +57,15 @@ export const actions = {
   LimparCourses({ commit }) {
     commit('clearCourses');
   },
+  LimparSelectCouse({ commit }) {
+    commit('clearSelectCouse');
+  },
   async GetCoursesAsync({ commit }) {
     try {
       commit('clearCourses');
       const courses = await this.$axios.$get(process.env.DIGITALMATRICULA_API_URL + '/course')
 
       courses.forEach(course => {
-        console.log(course.name)
         commit('addCourses', course);
       });
     } catch (error) {
