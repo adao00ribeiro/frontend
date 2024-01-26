@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 d-flex flex-column flex-grow-1">
-    <h3>Informaçôes Adicionais</h3>
+    <h3>Informações Adicionais</h3>
     <form class="w-100 h-100 d-flex flex-column" @submit.prevent="validateFields()">
       <div class="flex-grow-1">
         <div class="row mb-2">

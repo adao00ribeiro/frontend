@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 d-flex flex-column flex-grow-1">
-    <h4>Confirmacao dos Dados</h4>
+    <h4>Confirmação dos Dados</h4>
     <div class="w-100 h-100 p-1 d-flex flex-column flex-grow-1 overflow-scroll">
       <h5 class="bg-primary p-1">Curso</h5>
       <div class="d-flex flex-row justify-content-between">
