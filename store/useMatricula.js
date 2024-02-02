@@ -1,6 +1,7 @@
 
 export const state = () => ({
     matricula: {
+        id: "",
         name: "",
         email: "",
         phone: "",
@@ -22,7 +23,9 @@ export const getters = {
 }
 
 export const mutations = {
-
+    setId(state, id) {
+        state.matricula.id = id;
+    },
     setName(state, name) {
         state.matricula.name = name;
     },
@@ -75,6 +78,10 @@ export const mutations = {
 }
 
 export const actions = {
+
+    setId({ commit }, id) {
+        commit('setId', id);
+    },
     setName({ commit }, name) {
         commit('setName', name);
     },

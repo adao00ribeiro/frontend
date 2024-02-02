@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 d-flex flex-column flex-grow-1">
     <h3>Dados Pessoais</h3>
-    <form class=" h-100 d-flex flex-column " @submit.prevent="validateFields()">
+    <form class=" h-100 d-flex flex-column " @submit.prevent="OnChangeSubmit()">
       <div class="flex-grow-1">
         <div class="form-group">
           <label for="exampleInputEmail1">Nome</label>
@@ -9,8 +9,8 @@
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Email</label>
-          <input required type="email" class="form-control" id="email" v-model="formData.email" @input="validateEmail()"
-            placeholder="sthepen@gmail.com" />
+          <input ref="inputEmail" required type="email" class="form-control" id="email" v-model="formData.email"
+            @input="validateEmailRegex()" @blur="validateEmail" placeholder="sthepen@gmail.com" />
           <span class="alerterror register-first-error" v-if="!IsEmailValid">
             Por favor, insira um Email válido.
           </span>
@@ -52,7 +52,8 @@ export default {
         phone: "",
       },
       isPhoneValid: true,
-      IsEmailValid: true
+      IsEmailValid: true,
+      AcademicExist: false
     }
   },
   created() {
@@ -69,13 +70,38 @@ export default {
   methods: {
     ...mapActions("step", ["SetStep"]),
 
-    validateFields() {
-      if (this.isPhoneValid && this.IsEmailValid && this.formData.name !== "") {
-        this.$store.dispatch('useMatricula/setName', this.formData.name);
-        this.$store.dispatch('useMatricula/setEmail', this.formData.email);
-        this.$store.dispatch('useMatricula/setPhone', this.formData.phone);
-        this.SetStep(this.step + 1);
+    async OnChangeSubmit() {
+
+      try {
+        let IsPostOrPut = false;
+        if (!this.AcademicExist) {
+          const responsePost = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + '/enrollment', this.formData);
+          if (responsePost.data) {
+            IsPostOrPut = true;
+          }
+        } else {
+          const responsePost = await this.$axios.put(process.env.DIGITALMATRICULA_API_URL + `/enrollment/${this.Matricula.id}`, this.formData);
+          if (responsePost.data) {
+            IsPostOrPut = true;
+          }
+        }
+        if (IsPostOrPut) {
+          this.$store.dispatch('useMatricula/setName', this.formData.name);
+          this.$store.dispatch('useMatricula/setEmail', this.formData.email);
+          this.$store.dispatch('useMatricula/setPhone', this.formData.phone);
+          this.SetStep(this.step + 1);
+        }
+      } catch (error) {
+        console.error(error.response, "erer")
       }
+
+
+      /*
+      this.$store.dispatch('useMatricula/setName', this.formData.name);
+      this.$store.dispatch('useMatricula/setEmail', this.formData.email);
+      this.$store.dispatch('useMatricula/setPhone', this.formData.phone);
+      this.SetStep(this.step + 1);
+      */
     },
 
     validatePhone() {
@@ -83,9 +109,19 @@ export default {
       var regexTelefone = /^\(?[1-9]{2}\)? ?(?:[2-8]|9[0-9])[0-9]{3}\-?[0-9]{4}$/;
       this.isPhoneValid = regexTelefone.test(this.formData.phone);
     },
-    validateEmail() {
+    validateEmailRegex() {
       var regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       this.IsEmailValid = regexEmail.test(this.formData.email);
+    },
+    async validateEmail() {
+      try {
+        const response = await this.$axios.get(
+          process.env.DIGITALMATRICULA_API_URL + `/enrollment/email/${this.formData.email}`);
+        this.$store.dispatch("useMatricula/setId", response.data.id);
+        this.AcademicExist = response.data ? true : false;
+      } catch (error) {
+        this.AcademicExist = false;
+      }
     },
     back() {
       this.$router.push('/')
