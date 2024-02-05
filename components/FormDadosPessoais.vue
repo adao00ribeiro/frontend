@@ -94,8 +94,6 @@ export default {
       } catch (error) {
         console.error(error.response, "erer")
       }
-
-
       /*
       this.$store.dispatch('useMatricula/setName', this.formData.name);
       this.$store.dispatch('useMatricula/setEmail', this.formData.email);
