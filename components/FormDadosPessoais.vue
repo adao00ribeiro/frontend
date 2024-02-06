@@ -77,6 +77,7 @@ export default {
         if (!this.AcademicExist) {
           const responsePost = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + '/enrollment', this.formData);
           if (responsePost.data) {
+            this.$store.dispatch("useMatricula/setId", response.data.id);
             IsPostOrPut = true;
           }
         } else {

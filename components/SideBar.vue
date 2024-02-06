@@ -28,16 +28,6 @@
                 <p>Envio de Documentos</p>
             </div>
         </div>
-        <div class="groupbox">
-            <div :class="{ 'containerH3Selecionado': step === 4, 'containerH3': step !== 4 }">
-                <h3>4</h3>
-            </div>
-            <div class="groupText">
-                <span>STEP 4</span>
-                <p>Confirmação e Envio</p>
-            </div>
-        </div>
-
     </div>
 </template>
 
