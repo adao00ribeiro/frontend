@@ -25,9 +25,11 @@
         </div>
       </div>
       <div class="d-flex flex-row justify-content-between">
-        <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
-          Voltar
-        </button>
+        <!-- 
+          <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
+            Voltar
+          </button>
+          -->
         <button type="submit" class="buttonprimary btn mt-auto align-self-end">
           Próxima Etapa
         </button>
@@ -62,9 +64,13 @@ export default {
     this.formData.email = this.Matricula.email;
     this.formData.phone = this.Matricula.phone;
 
+    if (!this.SelectedCourse.id) {
+      this.$router.push("/")
+    }
   },
   computed: {
     ...mapGetters("step", ['step']),
+    ...mapGetters("courses", ["SelectedCourse"]),
     ...mapGetters("useMatricula", ['Matricula'])
   },
   methods: {
@@ -77,15 +83,26 @@ export default {
         if (!this.AcademicExist) {
           const responsePost = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + '/enrollment', this.formData);
           if (responsePost.data) {
-            this.$store.dispatch("useMatricula/setId", response.data.id);
+            console.log("criado", responsePost.data);
+            this.$store.dispatch("useMatricula/setId", responsePost.data.id);
             IsPostOrPut = true;
           }
         } else {
           const responsePost = await this.$axios.put(process.env.DIGITALMATRICULA_API_URL + `/enrollment/${this.Matricula.id}`, this.formData);
           if (responsePost.data) {
+            console.log("atualizado", responsePost.data);
             IsPostOrPut = true;
           }
         }
+        const data = {
+          enrollmentId: this.Matricula.id,
+          courseId: this.SelectedCourse.id
+        }
+        const responsePost = await this.$axios.post(process.env.DIGITALMATRICULA_API_URL + '/enrolledcourse', data);
+        if (responsePost.data) {
+          console.log(responsePost.data)
+        }
+
         if (IsPostOrPut) {
           this.$store.dispatch('useMatricula/setName', this.formData.name);
           this.$store.dispatch('useMatricula/setEmail', this.formData.email);

@@ -29,9 +29,11 @@
         </span>
       </div>
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
-          Voltar
-        </button>
+        <!-- 
+          <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
+            Voltar
+          </button>
+          -->
         <button type="submit" class="btn btn-primary mt-auto align-self-end">
           Próxima Etapa
         </button>
@@ -71,23 +73,56 @@ export default {
     ...mapActions("step", ["SetStep"]),
     async OnChangeSubmit() {
       if (this.Matricula.id === "" || this.DocumentoFrente.imageAvatar == null || this.DocumentoVerso.imageAvatar == null) {
-        console.log("opa")
+
         return;
       }
 
       try {
-        const response = await this.$axios.post();
 
+        const formData = new FormData();
+        formData.append("enrollmentId", this.Matricula.id);
+        formData.append("frontdocumentUrl", "imagefront");
+        formData.append("backdocumentUrl", "imageback");
+        formData.append("files", this.DocumentoFrente.imageAvatar);
+        formData.append("files", this.DocumentoVerso.imageAvatar);
 
-        if (response.data) {
-          this.showMsgBoxTwo();
+        if (!this.Matricula.id) {
+
+          const response = await this.$axios.post(
+            process.env.DIGITALMATRICULA_API_URL + "/document",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data", // Certifique-se de configurar o cabeçalho correto
+              },
+            }
+          );
+          if (response.data) {
+            this.showMsgBoxTwo();
+          }
+
+        } else {
+          const responsePost = await this.$axios.put(
+            process.env.DIGITALMATRICULA_API_URL +
+            `/document/${this.Matricula.id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data", // Certifique-se de configurar o cabeçalho correto
+              },
+            }
+          );
+          if (responsePost.data) {
+            this.showMsgBoxTwo();
+          }
         }
+
 
         //this.$store.dispatch('useMatricula/setDocumentFrente', this.DocumentoFrente.imageAvatar);
         //this.$store.dispatch('useMatricula/setDocumentVerso', this.DocumentoVerso.imageAvatar);
         //this.SetStep(this.step + 1);
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
     },
     async handleFileFrente(event) {

@@ -1,87 +1,45 @@
 <template>
   <div class="p-4 d-flex flex-column flex-grow-1">
     <h3>Informações Adicionais</h3>
-    <form
-      class="w-100 h-100 d-flex flex-column"
-      @submit.prevent="OnChangeSubmit()"
-    >
+    <form class="w-100 h-100 d-flex flex-column" @submit.prevent="OnChangeSubmit()">
       <div class="flex-grow-1">
         <div class="row mb-2">
           <div class="col">
             <label for="exampleInputEmail1">Cidade</label>
-            <input
-              required
-              type="text"
-              class="form-control"
-              id="city"
-              v-model="formData.city"
-              aria-describedby="city"
-              placeholder="e.g sthepen"
-            />
+            <input required type="text" class="form-control" id="city" v-model="formData.city" aria-describedby="city"
+              placeholder="e.g sthepen" />
           </div>
           <div class="col">
             <label for="exampleInputEmail1">Estado</label>
-            <input
-              required
-              type="text"
-              class="form-control"
-              id="state"
-              v-model="formData.state"
-              aria-describedby="state"
-              placeholder="e.g sthepen"
-            />
+            <input required type="text" class="form-control" id="state" v-model="formData.state" aria-describedby="state"
+              placeholder="e.g sthepen" />
           </div>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">CEP</label>
-          <input
-            required
-            type="text"
-            class="form-control"
-            id="cep"
-            v-mask="'#####-###'"
-            v-model="formData.cep"
-            placeholder="00000-000"
-            @blur="ConsultarCep"
-            autocomplete="off"
-          />
+          <input required type="text" class="form-control" id="cep" v-mask="'#####-###'" v-model="formData.cep"
+            placeholder="00000-000" @blur="ConsultarCep" autocomplete="off" />
           <span class="alerterror register-first-error" v-if="!IsCepValid">
-            Por favor, insira um CPF válido.
+            Por favor, insira um CEP válido.
           </span>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">CPF</label>
-          <input
-            required
-            type="text"
-            class="form-control"
-            id="cpf"
-            v-mask="'###.###.###-##'"
-            v-model="formData.cpf"
-            placeholder="000.000.000-00"
-            @blur="ConsultarCpf"
-          />
+          <input required type="text" class="form-control" id="cpf" v-mask="'###.###.###-##'" v-model="formData.cpf"
+            placeholder="000.000.000-00" @blur="ConsultarCpf" />
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Data de Nascimento</label>
-          <input
-            required
-            type="date"
-            class="form-control"
-            id="birthday"
-            v-model="formData.birthday"
-            placeholder="01/01/1990"
-          />
+          <input required type="date" class="form-control" id="birthday" v-model="formData.birthday"
+            placeholder="01/01/1990" />
         </div>
       </div>
       <div class="d-flex flex-row justify-content-between">
-        <button
-          type="button"
-          class="btn mt-auto align-self-start bg-transparent"
-          @click="back()"
-        >
-          Voltar
-        </button>
+        <!-- 
+          <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
+            Voltar
+          </button>
+          -->
         <button type="submit" class="btn btn-primary mt-auto align-self-end">
           Próxima Etapa
         </button>
@@ -143,7 +101,7 @@ export default {
         } else {
           const responsePost = await this.$axios.put(
             process.env.DIGITALMATRICULA_API_URL +
-              `/personaldata/${this.formData.cpf}`,
+            `/personaldata/${this.formData.cpf}`,
             data
           );
 
@@ -183,7 +141,7 @@ export default {
       try {
         const response = await this.$axios.get(
           process.env.DIGITALMATRICULA_API_URL +
-            `/personaldata/cpf/${this.formData.cpf}`
+          `/personaldata/cpf/${this.formData.cpf}`
         );
         this.IsCpfValid = true;
       } catch (error) {
