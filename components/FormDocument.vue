@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 d-flex flex-column flex-grow-1">
     <h4>Documento de Identificaçao</h4>
-    <form class="w-100 h-100 d-flex flex-column " @submit.prevent="validateFields()">
+    <form class="w-100 h-100 d-flex flex-column " @submit.prevent="OnChangeSubmit()">
       <div class="flex-grow-1">
         <div>
           <span>Frente</span>
@@ -29,15 +29,16 @@
         </span>
       </div>
       <div class="d-flex justify-content-between">
-        <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
-          Voltar
-        </button>
+        <!-- 
+          <button type="button" class="btn mt-auto align-self-start bg-transparent" @click="back()">
+            Voltar
+          </button>
+          -->
         <button type="submit" class="btn btn-primary mt-auto align-self-end">
           Próxima Etapa
         </button>
       </div>
     </form>
-
   </div>
 </template>
 
@@ -70,11 +71,58 @@ export default {
   },
   methods: {
     ...mapActions("step", ["SetStep"]),
-    validateFields() {
-      if (this.DocumentoFrente.imageAvatar != null && this.DocumentoVerso.imageAvatar != null) {
-        this.$store.dispatch('useMatricula/setDocumentFrente', this.DocumentoFrente.imageAvatar);
-        this.$store.dispatch('useMatricula/setDocumentVerso', this.DocumentoVerso.imageAvatar);
-        this.SetStep(this.step + 1);
+    async OnChangeSubmit() {
+      if (this.Matricula.id === "" || this.DocumentoFrente.imageAvatar == null || this.DocumentoVerso.imageAvatar == null) {
+
+        return;
+      }
+
+      try {
+
+        const formData = new FormData();
+        formData.append("enrollmentId", this.Matricula.id);
+        formData.append("frontdocumentUrl", "imagefront");
+        formData.append("backdocumentUrl", "imageback");
+        formData.append("files", this.DocumentoFrente.imageAvatar);
+        formData.append("files", this.DocumentoVerso.imageAvatar);
+
+        if (!this.Matricula.id) {
+
+          const response = await this.$axios.post(
+            process.env.DIGITALMATRICULA_API_URL + "/document",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data", // Certifique-se de configurar o cabeçalho correto
+              },
+            }
+          );
+          if (response.data) {
+            this.showMsgBoxTwo();
+          }
+
+        } else {
+          const responsePost = await this.$axios.put(
+            process.env.DIGITALMATRICULA_API_URL +
+            `/document/${this.Matricula.id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data", // Certifique-se de configurar o cabeçalho correto
+              },
+            }
+          );
+          if (responsePost.data) {
+            this.showMsgBoxTwo();
+          }
+        }
+
+
+        //this.$store.dispatch('useMatricula/setDocumentFrente', this.DocumentoFrente.imageAvatar);
+        //this.$store.dispatch('useMatricula/setDocumentVerso', this.DocumentoVerso.imageAvatar);
+        //this.SetStep(this.step + 1);
+      } catch (error) {
+        console.log(error.response);
       }
     },
     async handleFileFrente(event) {
@@ -105,6 +153,25 @@ export default {
         this.DocumentoVerso.imagemUrl = URL.createObjectURL(event.target.files[0]);
         this.DocumentoVerso.imageAvatar = image;
       }
+    },
+    showMsgBoxTwo() {
+      this.boxTwo = ''
+      this.$bvModal.msgBoxOk('Matriculado com sucesso', {
+        title: 'Confirmation',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'success',
+        headerClass: 'p-2 border-bottom-0',
+        footerClass: 'p-2 border-top-0',
+        centered: true
+      })
+        .then(value => {
+          this.boxTwo = value
+          this.$router.push("/");
+        })
+        .catch(err => {
+
+        })
     },
     back() {
       this.SetStep(this.step - 1);

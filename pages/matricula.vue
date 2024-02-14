@@ -27,9 +27,7 @@ export default {
                 case 3:
                     return <FormDocument></FormDocument>
                     break;
-                case 4:
-                    return <Confirmacao></Confirmacao>
-                    break;
+
             }
         }
 
